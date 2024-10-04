@@ -3,6 +3,10 @@ const numbers = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣
 const iDevise = navigator.platform.match(/^iP/)
 const feedback = document.querySelector('.feedback')
 
+// Audio setup
+const explosionSound = new Audio('explosion.mp3');
+const popSound = new Audio('pop.mp3');
+
 var Game = function (cols, rows, number_of_bombs, set, usetwemoji) {
   this.number_of_cells = cols * rows
   this.map = document.getElementById('map')
@@ -86,6 +90,12 @@ Game.prototype.bindEvents = function () {
 
       target.reveal()
       that.updateFeedback(target.getAttribute('aria-label'))
+
+      if (target.isBomb) {
+        explosionSound.play();
+      } else {
+        popSound.play();
+      }
 
       if (target.mine_count === 0 && !target.isBomb) {
         that.revealNeighbors(target)
